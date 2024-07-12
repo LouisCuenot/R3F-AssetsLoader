@@ -1,21 +1,33 @@
+
 import { Canvas } from '@react-three/fiber'
 import './App.css'
-import Scene from './assets/Components/Scene/Scene'
-import Controls from './assets/Components/Controls/Controls'
-import Lights from './assets/Components/Lights/Lights'
-import Camera from './assets/Components/Camera/Camera'
+import LoadingManager from './LoadingManager/LoadingManager'
+import { Suspense, useState } from 'react'
+import Loader from './Loader/Loader'
+import Scene from './Components/Scene'
+
+
 
 
 function App() {
 
+  const [areAssetsLoaded, setAreAssetsLoaded] = useState(false)
 
   return (
     <Canvas>
-      <Scene/>
-      <Controls/>
-      <Lights/>
-      <Camera/>
-      
+      {
+        !areAssetsLoaded &&
+        <Loader
+          setAreAssetsLoaded={setAreAssetsLoaded}
+        />
+      }
+      <Suspense>
+        <LoadingManager/>
+      </Suspense>
+      {
+        areAssetsLoaded &&
+        <Scene/>
+      }
     </Canvas>
   )
 }
