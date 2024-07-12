@@ -2,7 +2,7 @@ export const source = {
     textures:[
         {
             name:'texture1',
-            src:'/CPI.png'
+            src:'/FEUILLE 1.png'
         },
         {
             name:'texture2',
