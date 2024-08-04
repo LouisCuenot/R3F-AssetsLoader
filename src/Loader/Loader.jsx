@@ -12,6 +12,9 @@ const Loader = ({setAreAssetsLoaded}) => {
 
   const { loaded } = useProgress()
 
+
+  
+
   useEffect(() => {
     numberOfAssets.current += source.textures.length
     for (let i = 0; i < source.models.length; i++) {
@@ -20,6 +23,7 @@ const Loader = ({setAreAssetsLoaded}) => {
   }, [])
 
   useEffect(() => {
+
     if (animationRef.current) {
       animationRef.current.kill()
     }

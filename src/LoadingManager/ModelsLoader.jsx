@@ -10,9 +10,6 @@ const setAssets = useSetAssets()
   const modelPaths = source.models.map(model => `/models${model.src}`)
   const models = useGLTF(modelPaths)
 
-
-  
-
   const loadedModels = source.models.reduce((acc, model, index) => {
     acc[model.name] = models[index]
     return acc
