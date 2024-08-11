@@ -136,7 +136,7 @@ const World = () => {
         }}
         visible={false}
       >
-        <planeGeometry args={[1,1]}/>
+        <planeGeometry args={[viewport.width,viewport.height]}/>
       </mesh>
 
       <Scene
