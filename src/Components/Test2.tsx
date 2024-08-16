@@ -1,13 +1,16 @@
 import { useFrame } from '@react-three/fiber'
-import React, { useRef } from 'react'
+import React, { useRef, forwardRef, useImperativeHandle } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Mesh } from 'three'
-import { useTransition } from '../HooksProvider/HooksProvider'
+import { useScenes } from './World'
 
 
-const Test2 = () => {
 
-  const {setTransition} = useTransition()
+const Test2 = forwardRef(() => {
+
+  const {currentScene, navigateTo} = useScenes()
+
+
 
 
 
@@ -24,16 +27,20 @@ const tRef = useRef<Mesh>(null)
         <mesh
         ref={tRef}
         onClick={()=>{
-          setTransition({
-            url:'/t',
-            duration:1000
+          navigateTo({
+            targetPage:{
+              url:'/t',
+              id:0
+            },
+            duration:1000,
           })
         }}
+        position-y={0}
         >
             <latheGeometry  />
             <meshNormalMaterial />
         </mesh>
     )
-}
+})
 
 export default Test2

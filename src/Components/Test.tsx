@@ -3,13 +3,12 @@ import React, { useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Mesh } from 'three'
 import { useTransition } from '../HooksProvider/HooksProvider'
+import { useScenes } from './World'
 
 
 const Test = () => {
 
-  const navigate = useNavigate()
-
-  const {setTransition} = useTransition()
+  const {navigateTo} = useScenes()
 
   
 
@@ -25,11 +24,13 @@ const Test = () => {
   return (
     <mesh
       ref={tRef}
-      position-z={0}
       onClick={()=>{
-        setTransition({
-          url:'/',
-          duration:3000
+        navigateTo({
+          targetPage:{
+            url:'/',
+            id:0
+          },
+          duration:1000,
         })
       }}
     >
