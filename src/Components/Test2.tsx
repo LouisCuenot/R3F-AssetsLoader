@@ -1,16 +1,21 @@
 import { useFrame } from '@react-three/fiber'
-import React, { useRef, forwardRef, useImperativeHandle } from 'react'
+import React, { useRef, forwardRef, useImperativeHandle, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Mesh } from 'three'
 import { useScenes } from './World'
 
 
 
-const Test2 = forwardRef(() => {
+
+
+const Test2 = () => {
 
   const {currentScene, navigateTo} = useScenes()
 
 
+  
+
+  
 
 
 
@@ -35,12 +40,12 @@ const tRef = useRef<Mesh>(null)
             duration:1000,
           })
         }}
-        position-y={0}
+        position-x={2.5}
         >
             <latheGeometry  />
             <meshNormalMaterial />
         </mesh>
     )
-})
+}
 
 export default Test2

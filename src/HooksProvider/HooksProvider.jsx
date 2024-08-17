@@ -1,16 +1,22 @@
+
 import { createContext, useContext, useState } from "react"
 
 const HooksContext = createContext()
 
-export const HooksProvider = ({children})=>{
+export const HooksProvider = ({children, sLenisSize, lenisSize})=>{
 
-    const [transition, setTransition] = useState(null)   
+   
+
+    const useResizeScroll = (f) => {
+        sLenisSize(f)
+    }
+    
 
     return(
         <HooksContext.Provider
             value={{
-                transition,
-                setTransition
+                lenisSize,
+                useResizeScroll
             }}
         >
             {children}
@@ -18,4 +24,4 @@ export const HooksProvider = ({children})=>{
     )
 }
 
-export const useTransition = () => useContext(HooksContext)
+export const useCustomHooks = () => useContext(HooksContext)

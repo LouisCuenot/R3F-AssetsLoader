@@ -8,10 +8,10 @@ import Scene from './Scene/Scene'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Test2 from './Test2'
 import Test from './Test'
-import { useTransition } from '../HooksProvider/HooksProvider'
 import gsap from 'gsap'
 import SubScene from './SubScene/SubScene'
 import { MathUtils } from 'three'
+import { useLenis } from '@studio-freight/react-lenis'
 
 const RenderMaterial = shaderMaterial(
   {
@@ -33,6 +33,8 @@ export const useScenes = () => useContext(getScenesRefContext)
 
 const World = () => {
 
+  const lenis = useLenis()
+
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const { viewport } = useThree()
@@ -45,7 +47,8 @@ const World = () => {
   const [targetScene, setTargetScene] = useState({
     url:null
   })
-  const transiFactor = useRef(0)
+  const [transiFactor, setTransiFactor] = useState(0)
+  
 
   const renderCamera = useRef()
   const renderMeshRef = useRef()
@@ -62,7 +65,7 @@ const World = () => {
     if (!currentScene || !renderMeshRef.current) return
 
     renderMeshRef.current.visible = false
-    renderMaterialRef.current.uniforms.uProgress.value = transiFactor.current
+    renderMaterialRef.current.uniforms.uProgress.value = transiFactor
 
 
     let cScene = null
@@ -121,11 +124,15 @@ const World = () => {
       id:targetPage.id|0
     })
 
+    const tFactor = {
+      value:0
+    }
 
-    gsap.to(transiFactor, {
-      current: 1,
+    gsap.to(tFactor, {
+      value: 1,
       duration: duration * 0.001,
       ease: 'power1.in',
+      onUpdate:()=>setTransiFactor(tFactor.value),
       onComplete: () => {
         setCurrentScene({
           url:targetPage.url,
@@ -134,12 +141,10 @@ const World = () => {
         setTargetScene({
           url:null
         })
-        transiFactor.current = 0
+        setTransiFactor(0)
         navigate(targetPage.url)
       }
     })
-
-
 
   }
 
@@ -157,12 +162,20 @@ const World = () => {
           setCurrentScene,
           targetScene,
           setTargetScene,
+          transiFactor,
+          setTransiFactor,
           navigateTo
         }}
       >
         <Scene
           url={"/"}
-
+          height={5}
+          steps={[
+            {
+              start:0.4,
+              duration:0.2
+            }
+          ]}
         >
           <SubScene
             id={0}
@@ -174,6 +187,15 @@ const World = () => {
           >
             <mesh
               position-x={-2.5}
+              onClick={()=>{
+                navigateTo({
+                  targetPage:{
+                    url:'/',
+                    id:0
+                  },
+                  duration:1000,
+                })
+              }}
             >
               <sphereGeometry />
               <meshBasicMaterial color={0xF63D02} />
@@ -182,6 +204,7 @@ const World = () => {
         </Scene>
         <Scene
           url={"/t"}
+          height={2}
         >
           <SubScene>
             <Test />
@@ -198,7 +221,7 @@ const World = () => {
           ref={renderMaterialRef}
           uTexture={null}
           uTransiTexture={null}
-          uProgress={transiFactor.current}
+          uProgress={transiFactor}
         />
       </mesh>
 

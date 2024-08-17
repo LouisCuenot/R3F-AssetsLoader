@@ -2,7 +2,7 @@ import { useFrame } from '@react-three/fiber'
 import React, { useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Mesh } from 'three'
-import { useTransition } from '../HooksProvider/HooksProvider'
+
 import { useScenes } from './World'
 
 
@@ -28,7 +28,7 @@ const Test = () => {
         navigateTo({
           targetPage:{
             url:'/',
-            id:0
+            id:1
           },
           duration:1000,
         })
