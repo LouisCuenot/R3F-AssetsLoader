@@ -3,6 +3,7 @@ import React, { useRef, forwardRef, useImperativeHandle, useEffect } from 'react
 import { useNavigate } from 'react-router-dom'
 import { Mesh } from 'three'
 import { useScenes } from './World'
+import { useSceneParams } from './Scene/Scene'
 
 
 
@@ -11,6 +12,7 @@ import { useScenes } from './World'
 const Test2 = () => {
 
   const {currentScene, navigateTo} = useScenes()
+  const {scrollToSubScene} = useSceneParams()
 
 
   
@@ -32,13 +34,7 @@ const tRef = useRef<Mesh>(null)
         <mesh
         ref={tRef}
         onClick={()=>{
-          navigateTo({
-            targetPage:{
-              url:'/t',
-              id:0
-            },
-            duration:1000,
-          })
+          scrollToSubScene(0)
         }}
         position-x={2.5}
         >

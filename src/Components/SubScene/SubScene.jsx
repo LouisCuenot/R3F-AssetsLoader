@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef } from 'react';
-import { getSceneUrlContext } from '../Scene/Scene';
+import { getSceneUrlContext, useSceneParams } from '../Scene/Scene';
 import { getScenesRefContext, useScenes } from '../World';
 import { useFrame } from '@react-three/fiber';
 import { useLenis } from '@studio-freight/react-lenis';
@@ -13,7 +13,7 @@ const SubScene = ({ id, children}) => {
 
    
 
-    const {url,steps} = useContext(getSceneUrlContext)
+    const {url} = useSceneParams()
 
     const { scenesRef, currentScene,setCurrentScene, targetScene } = useScenes()
 

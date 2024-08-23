@@ -4,10 +4,10 @@ uniform sampler2D uTransiTexture;
 uniform float uProgress;
 
 void main() { 
-    vec3 txtr = texture2D(uTexture,vUv).rgb;
-    vec3 transiTxtr = texture2D(uTransiTexture,vUv).rgb;
-    vec3 fusionnedTxtr = mix(txtr,transiTxtr,uProgress);
-    gl_FragColor = vec4(fusionnedTxtr,1.0);
+    vec4 txtr = texture2D(uTexture,vUv);
+    vec4 transiTxtr = texture2D(uTransiTexture,vUv);
+    vec4 fusionnedTxtr = mix(txtr,transiTxtr,uProgress);
+    gl_FragColor = vec4(fusionnedTxtr);
 
     #include <tonemapping_fragment>
     #include <colorspace_fragment> 

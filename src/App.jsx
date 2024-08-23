@@ -16,6 +16,7 @@ import { useLenis } from "@studio-freight/react-lenis"
 
 
 
+
 function App() {
 
 
@@ -34,7 +35,12 @@ function App() {
           <BrowserRouter>
             <div style={{width:'100vw',height:`${lenisSize*100}vh`,pointerEvents:'none'}}/>
             <div className="canvasContainer">
-              <Canvas>
+              <Canvas 
+                gl={{
+                  alpha:true,
+                  
+                }}
+              >
                 {
                   !areAssetsLoaded &&
                   <Loader
@@ -48,6 +54,7 @@ function App() {
                   areAssetsLoaded &&
                   <World />
                 }
+                
               </Canvas>
             </div>
           </BrowserRouter>

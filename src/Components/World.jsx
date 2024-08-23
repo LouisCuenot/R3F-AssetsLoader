@@ -13,6 +13,7 @@ import SubScene from './SubScene/SubScene'
 import { MathUtils } from 'three'
 import { useLenis } from '@studio-freight/react-lenis'
 
+
 const RenderMaterial = shaderMaterial(
   {
     uTexture: null,
@@ -20,7 +21,10 @@ const RenderMaterial = shaderMaterial(
     uProgress: 0
   },
   renderShaderVert,
-  renderShaderFrag
+  renderShaderFrag,
+  (material) => {
+    material.transparent = true;
+  }
 )
 
 extend({ RenderMaterial })
@@ -45,10 +49,10 @@ const World = () => {
     url: pathname
   })
   const [targetScene, setTargetScene] = useState({
-    url:null
+    url: null
   })
   const [transiFactor, setTransiFactor] = useState(0)
-  
+
 
   const renderCamera = useRef()
   const renderMeshRef = useRef()
@@ -66,6 +70,7 @@ const World = () => {
 
     renderMeshRef.current.visible = false
     renderMaterialRef.current.uniforms.uProgress.value = transiFactor
+
 
 
     let cScene = null
@@ -98,17 +103,17 @@ const World = () => {
 
       gl.setRenderTarget(transiRenderTarget)
       gl.render(scene, renderCamera.current)
-      if(tScene){
+      if (tScene) {
         tScene.visible = false
       }
       renderMaterialRef.current.uniforms.uTransiTexture.value = transiRenderTarget.texture
-      
+
     }
 
     renderMaterialRef.current.uniforms.uTexture.value = renderTarget.texture
     gl.setRenderTarget(null)
     renderMeshRef.current.visible = true
-    
+
 
   })
 
@@ -118,31 +123,34 @@ const World = () => {
     animType
   }) => {
     if (!targetPage) return
-    
+
+    lenis.stop()
+
     setTargetScene({
-      url:targetPage.url,
-      id:targetPage.id|0
+      url: targetPage.url,
+      id: targetPage.id | 0
     })
 
     const tFactor = {
-      value:0
+      value: 0
     }
 
     gsap.to(tFactor, {
       value: 1,
       duration: duration * 0.001,
       ease: 'power1.in',
-      onUpdate:()=>setTransiFactor(tFactor.value),
+      onUpdate: () => setTransiFactor(tFactor.value),
       onComplete: () => {
         setCurrentScene({
-          url:targetPage.url,
-          id:targetPage.id|0
+          url: targetPage.url,
+          id: targetPage.id | 0
         })
         setTargetScene({
-          url:null
+          url: null
         })
         setTransiFactor(0)
         navigate(targetPage.url)
+        lenis.start()
       }
     })
 
@@ -154,7 +162,7 @@ const World = () => {
 
   return (
     <>
-      <color attach='background' args={[0xFFD500]} />
+
       <getScenesRefContext.Provider
         value={{
           scenesRef,
@@ -172,25 +180,20 @@ const World = () => {
           height={5}
           steps={[
             {
-              start:0.4,
-              duration:0.2
+              start: 0.4,
+              duration: 0.2
             }
           ]}
         >
           <SubScene
             id={0}
           >
-            <Test2 />
-          </SubScene>
-          <SubScene
-            id={1}
-          >
             <mesh
               position-x={-2.5}
-              onClick={()=>{
+              onClick={() => {
                 navigateTo({
                   targetPage:{
-                    url:'/',
+                    url:'/t',
                     id:0
                   },
                   duration:1000,
@@ -200,6 +203,11 @@ const World = () => {
               <sphereGeometry />
               <meshBasicMaterial color={0xF63D02} />
             </mesh>
+          </SubScene>
+          <SubScene
+            id={1}
+          >
+            <Test2 />
           </SubScene>
         </Scene>
         <Scene
@@ -226,16 +234,16 @@ const World = () => {
       </mesh>
 
       <mesh
-      position-z={4.9}
-      onClick={(e)=>{
-        if(!targetScene.url)return
-        console.log('CANCELED SPAM CLICK')
-        e.stopPropagation()
-      }}
-      visible={false}
-    >
-      <planeGeometry args={[viewport.width,viewport.height]}/>
-    </mesh>
+        position-z={4.9}
+        onClick={(e) => {
+          if (!targetScene.url) return
+          console.log('CANCELED SPAM CLICK')
+          e.stopPropagation()
+        }}
+        visible={false}
+      >
+        <planeGeometry args={[viewport.width, viewport.height]} />
+      </mesh>
     </>
   )
 }
