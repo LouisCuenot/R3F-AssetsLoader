@@ -108,7 +108,6 @@ const Scene = ({ url, children, height, steps, isInfinite }) => {
     const handleScroll = (e) => {
       if (steps) {
         getProgressRange(e.progress)
-        console.log(e.progress)
       }
     }
 
