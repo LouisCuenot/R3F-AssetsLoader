@@ -9,7 +9,7 @@ import { useScenes } from '../World';
 export const getSceneUrlContext = createContext();
 export const useSceneParams = () => useContext(getSceneUrlContext)
 
-const Scene = ({ url, children, height, steps }) => {
+const Scene = ({ url, children, height, steps, isInfinite }) => {
 
   const lenis = useLenis()
   const { pathname } = useLocation()
@@ -108,11 +108,17 @@ const Scene = ({ url, children, height, steps }) => {
     const handleScroll = (e) => {
       if (steps) {
         getProgressRange(e.progress)
+        console.log(e.progress)
       }
     }
 
 
     if (currentScene.url === url) {
+      if(isInfinite){
+        lenis.options.infinite = true
+      }else(
+        lenis.options.infinite = false
+      )
       lenis.on('scroll', handleScroll)
     }
     return () => lenis.off('scroll', handleScroll)

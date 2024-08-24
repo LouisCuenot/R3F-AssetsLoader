@@ -178,6 +178,7 @@ const World = () => {
         <Scene
           url={"/"}
           height={5}
+          isInfinite={true}
           steps={[
             {
               start: 0.4,
